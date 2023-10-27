@@ -32,11 +32,13 @@ interface Results {
 function Rickandmorty() {
   const api = "https://rickandmortyapi.com/api/character/";
   const [person, setPerson] = useState<Props>();
-  const [text, setText] = useState("");
+  // const [text, setText] = useState("");
+  const [inputValue, setValue] = useState("");
+
+  // console.log(text);
 
   useEffect(() => {
     getPersons();
-    getText();
   }, []);
 
   const getPersons = async () => {
@@ -44,11 +46,23 @@ function Rickandmorty() {
     setPerson(response.data);
   };
 
-  const valueText = "";
+  console.log(inputValue);
 
-  const getText = () => {
-    setText(valueText);
-  };
+  // const getText = () => {
+  //   setText(valueText);
+  // };
+
+  useEffect(() => {}, []);
+
+  function inputText(e) {
+    setValue(e.target.value);
+  }
+
+  const filterByCharacter = person?.results.filter((item) =>
+    item.name.toLowerCase().includes(inputValue)
+  );
+
+  console.log(filterByCharacter);
 
   return (
     <>
@@ -59,6 +73,7 @@ function Rickandmorty() {
           </div>
           <div className="flex justify-center w-96items-center">
             <input
+              onChange={inputText}
               className=" p-6 w-96 h-10 rounded-xl pr-24 relative "
               type="text"
             />
@@ -72,9 +87,9 @@ function Rickandmorty() {
           </div>
         </nav>
         <section className="flex justify-center py-20 w-full flex-wrap gap-10">
-          {person?.results.map((el, i) => (
-            <Card key={i} pers={el} />
-          ))}
+          {filterByCharacter.length > 0
+            ? filterByCharacter?.map((el, i) => <Card key={i} pers={el} />)
+            : person?.results.map((el, i) => <Card key={i} pers={el} />)}
         </section>
       </div>
     </>

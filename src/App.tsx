@@ -4,7 +4,7 @@ import axios from "axios";
 const api =
   "https://newsapi.org/v2/everything?q=keyword&apiKey=2c0ba7d6a9a345c8bec503396c49a259";
 interface props {
-  results: articles;
+  articles: articles;
 }
 interface articles {
   author: string;
@@ -17,7 +17,7 @@ interface articles {
 }
 
 function App() {
-  const [news, setNews] = useState<props[]>();
+  const [news, setNews] = useState<props[]>([]);
 
   useEffect(() => {
     getnews();
@@ -87,20 +87,38 @@ function App() {
         </div>
         <div className="bg-gray-100 w-full">
           <NavDash />
+          {/* <select
+            name="news"
+            id="news"
+            value={grupoSeleccionado}
+            onChange={(e) => setGrupoSeleccionado(e.target.value)}
+          >
+            {[...new Set(dataEstudiante.map((estudiante) => estudiante.new))]
+              .sort((a, b) => parseInt(a) - parseInt(b))
+              .map((new) => (
+                <option key={new} value={new}>
+                  {new}
+                </option>
+              ))}
+          </select> */}
           <table>
             <thead>
               <tr>
                 <th>News</th>
                 <th>Author</th>
+                <th>Description</th>
               </tr>
             </thead>
             <tbody>
               {news?.articles.map((e) => (
                 <tr key={e.author}>
-                  <td className="w-20">
-                    <img src={e.urlToImage} alt="" />
+                  <td className=" ">
+                    <a href={e.url} target="_blank">
+                      <img src={e.urlToImage} alt="" />
+                    </a>
                   </td>
                   <td>{e.author}</td>
+                  <td>{e.description}</td>
                 </tr>
               ))}
             </tbody>
